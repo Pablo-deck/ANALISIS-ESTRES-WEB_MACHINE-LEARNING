@@ -1,0 +1,2 @@
+py -m pip install flask deepface pandas scikit-learn tf-keras
+py app.py

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema de Estrés Inteligente</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<h1>🧠 Sistema Inteligente de Detección de Estrés</h1>
+
+<div class="container">
+
+    <!-- CAMARA -->
+    <div class="card">
+        <h3>📷 Cámara</h3>
+
+        <video id="video" autoplay></video>
+        <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+
+        <button type="button" id="capturar">Capturar imagen</button>
+    </div>
+
+    <!-- FORMULARIO -->
+    <div class="card">
+
+        <form id="formEstres" action="/analizar" method="POST" enctype="multipart/form-data">
+
+            <h3>📊 Formulario de datos del estudiante</h3>
+
+            <input type="hidden" name="imagen_capturada" id="imagen_capturada">
+
+            <label>Subir imagen manualmente</label>
+            <input type="file" name="imagen" accept="image/*">
+
+            <label>Horas de sueño</label>
+            <input type="number" name="horas_sueno" min="0" step="0.1" required>
+
+            <label>Evaluaciones próximas</label>
+            <input type="number" name="evaluaciones" min="0" required>
+
+            <label>Cansancio (1-10)</label>
+            <input type="number" name="cansancio" min="1" max="10" required>
+
+            <label>Presión académica (1-10)</label>
+            <input type="number" name="presion" min="1" max="10" required>
+
+            <label>Horas de estudio al día</label>
+            <input type="number" name="horas_estudio" min="0" step="0.1" required>
+
+            <button type="submit">Analizar estrés</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% if horas_sueno is defined %}
+<div class="card resultado-final">
+
+    <h3>---- RESULTADOS DEL SISTEMA ----</h3>
+
+    <p>Horas de sueño: {{ horas_sueno }}</p>
+    <p>Evaluaciones próximas: {{ evaluaciones }}</p>
+    <p>Nivel de cansancio: {{ cansancio }}</p>
+    <p>Presión académica: {{ presion }}</p>
+    <p>Horas de estudio al día: {{ horas_estudio }}</p>
+
+    <h3>----- Resultado de encuesta -----</h3>
+    <p>Puntaje de encuesta: {{ puntaje }} / 15</p>
+    <p>Nivel según encuesta: {{ nivel_encuesta }}</p>
+
+    <h3>----- Resultado facial -----</h3>
+    <p>Emoción detectada: {{ emocion }}</p>
+    <p>Nivel de riesgo facial: {{ riesgo_facial }}</p>
+
+    <h3>----- Resultado final -----</h3>
+    <p>Nivel estimado de estrés: <b>{{ nivel_final }}</b></p>
+
+</div>
+{% endif %}
+
+{% if error %}
+<div class="card resultado-final">
+    <h3>Error</h3>
+    <p>{{ error }}</p>
+</div>
+{% endif %}
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>
